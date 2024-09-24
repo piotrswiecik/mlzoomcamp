@@ -4,7 +4,7 @@ provider "aws" {
 }
 
 resource "aws_instance" "ml_zoomcamp_instance" {
-  ami               = "ami-0e04bcbe83a83792e" # Ubuntu 24.04 LTS x86_64
+  ami               = "ami-0724e2337a36ed1b2" # Custom Ubuntu 24.04 LTS x86_64
   instance_type     = "t2.micro"
   availability_zone = "eu-central-1a"
   key_name          = "ml_zoomcamp_key"
