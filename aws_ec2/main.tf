@@ -12,7 +12,8 @@ resource "aws_instance" "ml_zoomcamp_instance" {
 
   vpc_security_group_ids = [
     aws_security_group.ml_zoomcamp_sg_allow_ssh.id,
-    aws_security_group.ml_zoomcamp_sg_allow_egress.id
+    aws_security_group.ml_zoomcamp_sg_allow_egress.id,
+    aws_security_group.ml_zoomcamp_sg_allow_jupyter.id
   ]
 
   root_block_device {
@@ -74,12 +75,30 @@ resource "aws_security_group" "ml_zoomcamp_sg_allow_egress" {
   }
 }
 
+resource "aws_security_group" "ml_zoomcamp_sg_allow_jupyter" {
+    name = "allow_jupyter"
+    vpc_id = aws_vpc.ml_zoomcamp_vpc.id
+
+    tags = {
+    Name    = "ml_zoomcamp_sg_allow_jupyter"
+    Project = "ml_zoomcamp"
+  }
+}
+
 resource "aws_vpc_security_group_ingress_rule" "ml_zoomcamp_sg_allow_ssh" {
   security_group_id = aws_security_group.ml_zoomcamp_sg_allow_ssh.id
   cidr_ipv4 = "0.0.0.0/0"
   ip_protocol       = "tcp"
   from_port         = 22
   to_port           = 22
+}
+
+resource "aws_vpc_security_group_ingress_rule" "ml_zoomcamp_sg_allow_jupyter" {
+  security_group_id = aws_security_group.ml_zoomcamp_sg_allow_jupyter.id
+  cidr_ipv4 = "0.0.0.0/0"
+  ip_protocol       = "tcp"
+  from_port         = 8888
+  to_port           = 8888
 }
 
 resource "aws_internet_gateway" "ml_zoomcamp_igw" {
