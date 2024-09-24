@@ -15,6 +15,12 @@ resource "aws_instance" "ml_zoomcamp_instance" {
     aws_security_group.ml_zoomcamp_sg_allow_egress.id
   ]
 
+  root_block_device {
+    delete_on_termination = true
+    volume_size           = 30
+    volume_type = "gp3"
+  }
+
   tags = {
     Name    = "ml_zoomcamp_instance"
     Project = "ml_zoomcamp"
