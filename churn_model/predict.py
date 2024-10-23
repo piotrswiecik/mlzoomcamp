@@ -1,4 +1,5 @@
 import pickle
+from flask import Flask, request
 
 
 MODEL_FILE = "model.bin"
@@ -24,13 +25,16 @@ categorical = [
     "paymentmethod",
 ]
 
+app = Flask("churn")
 
-def predict(df, dv, model):
-    """Predict the probability of churn."""
-    dicts = df[categorical + numerical].to_dict(orient="records")
-    X = dv.transform(dicts)
-    y_pred = model.predict_proba(X)[:, 1]
-    return y_pred
+@app.route("/predict", methods=["POST"])
+def predict_churn():
+    customer = request.json
+    with open(MODEL_FILE, "rb") as f_in:
+        dv, model = pickle.load(f_in)
+        X = dv.transform([customer])
+        pred = model.predict_proba(X)[0, 1]
+        return {"churn_probability": pred}
 
 
 if __name__ == "__main__":
