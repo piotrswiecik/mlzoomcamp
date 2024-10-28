@@ -6,8 +6,11 @@ name = "pypi"
 [packages]
 scikit-learn = "==1.5.2"
 ipykernel = "*"
+flask = "*"
+gunicorn = "*"
 
 [dev-packages]
+black = "*"
 
 [requires]
 python_version = "3.12"
