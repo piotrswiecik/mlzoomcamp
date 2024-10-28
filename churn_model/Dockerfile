@@ -10,4 +10,6 @@ RUN pipenv install --deploy --system
 
 COPY predict.py model.bin ./
 
+EXPOSE 8001
+
 ENTRYPOINT [ "gunicorn", "--bind", "0.0.0.0:8001", "predict:app"]
